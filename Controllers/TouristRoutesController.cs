@@ -12,17 +12,26 @@ namespace FakeDotNetAPI.Controllers
     [ApiController]
     public class TouristRoutesController : ControllerBase
     {
-        private ITouristRouteRepository _touristRouteRepository;
+        private readonly ITouristRouteRepository _touristRouteRepository;
 
         public TouristRoutesController(ITouristRouteRepository touristRouteRepository)
         {
             _touristRouteRepository = touristRouteRepository;
         }
 
-        public IActionResult GerTouristRoutes()
+        [HttpGet]
+        public IActionResult GetTouristRoutes()
         {
             var routes = _touristRouteRepository.GetTouristRoutes();
             return Ok(routes);
+        }
+
+        // api/touristroutes/{touristRouteId}
+        [HttpGet("{touristRouteId}")]
+        public IActionResult GetTouristRouteById(Guid touristRouteId)
+        {
+            var route = _touristRouteRepository.GetTouristRoute(touristRouteId);
+            return Ok(route);
         }
     }
 }
