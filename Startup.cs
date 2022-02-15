@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FakeDotNetAPI.Database;
 using FakeDotNetAPI.Services;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace FakeDotNetAPI
 {
@@ -24,7 +25,13 @@ namespace FakeDotNetAPI
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(setupAction =>
+            {
+                setupAction.ReturnHttpNotAcceptable = true;
+                // setupAction.OutputFormatters.Add(
+                //     new XmlDataContractSerializerOutputFormatter()
+                // );
+            }).AddXmlDataContractSerializerFormatters();
             services.AddTransient<ITouristRouteRepository, TouristRouteRepository>();
             //services.AddSingleton
             //services.AddScoped
