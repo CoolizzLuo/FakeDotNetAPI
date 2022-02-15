@@ -22,16 +22,24 @@ namespace FakeDotNetAPI.Controllers
         [HttpGet]
         public IActionResult GetTouristRoutes()
         {
-            var routes = _touristRouteRepository.GetTouristRoutes();
-            return Ok(routes);
+            var touristRoutesFromRepo = _touristRouteRepository.GetTouristRoutes();
+            if (touristRoutesFromRepo == null || touristRoutesFromRepo.Count() <= 0)
+            {
+                return NotFound("沒有旅遊路線");
+            }
+            return Ok(touristRoutesFromRepo);
         }
 
         // api/touristroutes/{touristRouteId}
         [HttpGet("{touristRouteId}")]
         public IActionResult GetTouristRouteById(Guid touristRouteId)
         {
-            var route = _touristRouteRepository.GetTouristRoute(touristRouteId);
-            return Ok(route);
+            var touristRouteFromRepo = _touristRouteRepository.GetTouristRoute(touristRouteId);
+            if (touristRouteFromRepo == null)
+            {
+                return NotFound("沒有旅遊路線");
+            }
+            return Ok(touristRouteFromRepo);
         }
     }
 }
